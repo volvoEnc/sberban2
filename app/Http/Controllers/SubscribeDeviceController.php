@@ -11,10 +11,13 @@ class SubscribeDeviceController extends Controller
 {
     public function subscribe(Request $request)
     {
-        $userNotification = UserNotificationToken::create([
-            'key' => Auth::user()->id,
-            'value' => $request->token,
-        ]);
+        $userNotification = UserNotificationToken::query()
+            ->where('key', Auth::user()->id)
+            ->where('value', $request->token)
+            ->firstOrCreate([
+                'key' => Auth::user()->id,
+                'value' => $request->token,
+            ]);
 
         if (!$userNotification) {
             throw new HttpResponseException(response('null', 400));
