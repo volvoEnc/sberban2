@@ -32,12 +32,11 @@ class PushNotification extends Notification
 
     public function toExpoPush($notifiable)
     {
-        //todo
         return ExpoMessage::create()
             ->badge(1)
             ->enableSound()
-            ->title("Congratulations!")
-            ->body("You got this message. Your great!");
+            ->title("Что то случилось!")
+            ->body($this->getCurrentDate());
     }
 
     /**
@@ -52,6 +51,22 @@ class PushNotification extends Notification
         return [
             //
         ];
+    }
+
+    protected function getCurrentDate(): string
+    {
+        return date('d') . self::parseMonth('n') . date('Y H:i:s');
+    }
+
+    protected static function parseMonth($month): ?string
+    {
+        return [
+            null,
+            'января','февраля','марта',
+            'апреля','мая','июня',
+            'июля','августа','сентября',
+            'октября','ноября','декабря'
+        ][$month];
     }
 
 }
