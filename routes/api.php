@@ -21,7 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/login', 'UserController@login');
 Route::middleware('auth:api')->group(function () {
     Route::post('/sber_request', 'SberController@request');
-    Route::post('/active_services', 'SberController@getActiveServices');
+    Route::get('/active_services', 'SberController@getActiveServices');
 
     Route::post('/notifyUser', 'NotifyUserController@push');
     Route::post('/subscribeDevice', 'SubscribeDeviceController@subscribe');

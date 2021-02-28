@@ -43,7 +43,7 @@ class SberController extends Controller
     public function getActiveServices(Request $request)
     {
         $projectsCollection = new Collection();
-        $createdProject = rand(1, 4);
+        $createdProject = rand(2, 5);
         $inx = 0;
         while ($createdProject) {
             $createdProject--;
@@ -61,10 +61,17 @@ class SberController extends Controller
                         'x-auth-token' => (Auth::user())->sber_token
                     ])->get($url);
                     $count = $response->json()[$endpointMappingInfo['countMethod']] ?? null;
-                    if ($count && ($inx != 1 && (rand(0, 100) > 50))) {
-                        $endpoint->countElements = $count;
-                        $endpoint->full_name = $endpointMappingInfo['name'];
-                        $countServiceCollection->add($endpoint);
+                    if ($count) {
+                        if ($inx == 1) {
+                            $endpoint->countElements = $count;
+                            $endpoint->full_name = $endpointMappingInfo['name'];
+                            $countServiceCollection->add($endpoint);
+                        } elseif (rand(0,100) > 30) {
+                            $endpoint->countElements = $count;
+                            $endpoint->full_name = $endpointMappingInfo['name'];
+                            $countServiceCollection->add($endpoint);
+                            $countServiceCollection->shuffle();
+                        }
                     }
                 }
             }
